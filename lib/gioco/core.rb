@@ -30,6 +30,5 @@ module Gioco
         end
       end
     end
-    old_pontuation < points
   end
 end
