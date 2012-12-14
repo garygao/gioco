@@ -8,11 +8,11 @@ module Gioco
       if POINTS && TYPES
         case by_what
           when "today"
-            where_statement = where_statement + " & points.created_at > #{Time.now.at_beginning_of_day}"
+            where_statement = where_statement + " AND points.created_at > '#{Time.now.at_beginning_of_day}'"
           when "this week"
-            where_statement = where_statement + " & points.created_at > #{Time.now.at_beginning_of_week}"
+            where_statement = where_statement + " AND points.created_at > '#{Time.now.at_beginning_of_week}'"
           when "this month"
-            where_statement = where_statement + " & points.created_at > #{Time.now.at_beginning_of_month}"
+            where_statement = where_statement + " AND points.created_at > '#{Time.now.at_beginning_of_month}'"
         end
 
         data = RESOURCE_NAME.capitalize.constantize
