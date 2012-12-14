@@ -15,15 +15,13 @@ module Gioco
             where_statement = where_statement + " AND points.created_at > '#{Time.now.at_beginning_of_month}'"
         end
 
-        data = RESOURCE_NAME.capitalize.constantize
+        ranking = RESOURCE_NAME.capitalize.constantize
                 .select("#{RESOURCE_NAME.capitalize.constantize.table_name}.*,
                          SUM(points.value) AS user_points")
                 .joins(:points)
                 .where(where_statement)
                 .group("#{RESOURCE_NAME.capitalize.constantize.table_name}.id")
                 .order("user_points DESC")
-
-        ranking << {:ranking => data }
 
       elsif POINTS && !TYPES
         ranking = RESOURCE_NAME.capitalize.constantize.where(where_statement).order("points DESC")
