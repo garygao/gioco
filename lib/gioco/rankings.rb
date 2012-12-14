@@ -1,23 +1,29 @@
 module Gioco
   class Ranking < Core
 
-     def self.generate()
+     def self.generate(by_what = nil)
       ranking = []
       where_statement = "1=1"
 
       if POINTS && TYPES
-        Type.find(:all).each do |t|
-          data = RESOURCE_NAME.capitalize.constantize
-                  .select("#{RESOURCE_NAME.capitalize.constantize.table_name}.*, 
-                           points.type_id, SUM(points.value) AS type_points")
-                  .where("points.type_id = #{t.id}")
-                  .joins(:points)
-                  .group("type_id, #{RESOURCE_NAME}_id")
-                  .order("type_points DESC")
-
-          ranking << { :type => t, :ranking => data }
-        
+        case by_what
+          when "today"
+            where_statement = where_statement + " & points.created_at > #{Time.now.at_beginning_of_day}"
+          when "this week"
+            where_statement = where_statement + " & points.created_at > #{Time.now.at_beginning_of_week}"
+          when "this month"
+            where_statement = where_statement + " & points.created_at > #{Time.now.at_beginning_of_month}"
         end
+
+        data = RESOURCE_NAME.capitalize.constantize
+                .select("#{RESOURCE_NAME.capitalize.constantize.table_name}.*,
+                         SUM(points.value) AS user_points")
+                .joins(:points)
+                .where(where_statement)
+                .group("#{RESOURCE_NAME.capitalize.constantize.table_name}.id")
+                .order("user_points DESC")
+
+        ranking << {:ranking => data }
 
       elsif POINTS && !TYPES
         ranking = RESOURCE_NAME.capitalize.constantize.where(where_statement).order("points DESC")

@@ -91,7 +91,7 @@ namespace :gioco do
         puts "There are missing some arguments"
 
       else
-        ( Type.find_by_name(args.type) ) ? puts("Aborted! The type already existed.") : Type.create({ :name => args.type })
+        ( Type.find_by_name(args.name) ) ? puts("Aborted! The type already existed.") : Type.create({ :name => args.name })
       end
     end
 
