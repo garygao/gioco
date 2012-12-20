@@ -65,6 +65,13 @@ namespace :gioco do
                             #{":points => args.points," if options[:points]}
                             :default => args.default
                           })
+      if arg_default
+        resources = #{file_name.capitalize}.find(:all)
+        resources.each do |r|
+          r.badges << badge
+          r.save!
+        end
+      end
 
     end
 

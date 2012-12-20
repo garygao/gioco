@@ -1,9 +1,9 @@
 module Gioco
   class Ranking < Core
 
-     def self.generate(by_what = nil)
+     def self.generate(by_what = nil, additional_filter)
       ranking = []
-      where_statement = "1=1"
+      where_statement = "1=1 " + additional_filter
 
       if POINTS && TYPES
         case by_what
