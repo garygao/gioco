@@ -1,7 +1,7 @@
 module Gioco
   class Ranking < Core
 
-     def self.generate(by_what = nil, additional_filter)
+     def self.generate(by_what = nil, additional_filter = nil)
       ranking = []
       where_statement = "1=1 " + additional_filter
 
